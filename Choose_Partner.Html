@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choose Ur Partner</title>
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    background: linear-gradient(135deg, #ffe6f0, #ffb3d9); 
+    margin: 0; 
+    padding: 0; 
+  }
+
+  header { 
+    background: #ff3366; 
+    color: white; 
+    text-align: center; 
+    padding: 25px; 
+    font-size: 2.2em; 
+    font-weight: bold; 
+    letter-spacing: 2px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  }
+
+  .options { 
+    display: flex; 
+    justify-content: center; 
+    margin: 25px 0; 
+    gap: 20px; 
+  }
+
+  .options button { 
+    background: #fff; 
+    border: 2px solid #ff3366; 
+    color: #ff3366; 
+    padding: 15px 30px; 
+    font-size: 1.2em; 
+    cursor: pointer; 
+    border-radius: 12px; 
+    transition: 0.3s; 
+    font-weight: bold;
+  }
+
+  .options button:hover { 
+    background: #ff3366; 
+    color: white; 
+  }
+
+  .profiles { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 20px; 
+    padding: 0 20px; 
+  }
+
+  .profile-card { 
+    background: #fff0f5; 
+    border-radius: 15px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+    padding: 20px; 
+    width: 250px; 
+    text-align: center; 
+    cursor: pointer; 
+    transition: 0.3s;
+  }
+
+  .profile-card:hover { 
+    transform: scale(1.05); 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .profile-card h3 { 
+    margin: 10px 0; 
+    color: #c71585; 
+    text-decoration: underline; 
+  }
+
+  .profile-card p { 
+    margin: 5px 0; 
+    color: #666; 
+    font-size: 0.9em; 
+  }
+
+  .apply-form { 
+    max-width: 450px; 
+    margin: 30px auto; 
+    padding: 25px; 
+    background: #fff0f5; 
+    border-radius: 15px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+  }
+
+  .apply-form input, .apply-form textarea { 
+    width: 100%; 
+    padding: 10px; 
+    margin: 10px 0; 
+    border-radius: 10px; 
+    border: 1px solid #ccc; 
+  }
+
+  .apply-form button { 
+    background: #c71585; 
+    color: white; 
+    border: none; 
+    padding: 12px; 
+    width: 100%; 
+    border-radius: 10px; 
+    font-size: 1em; 
+    cursor: pointer; 
+    font-weight: bold;
+  }
+
+  .apply-form button:hover { 
+    background: #ff1a8c; 
+  }
+
+  /* Modal Styles */
+  .modal { 
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.5); 
+  }
+
+  .modal-content { 
+    background-color: #fff; 
+    margin: 10% auto; 
+    padding: 20px; 
+    border-radius: 15px; 
+    width: 90%; 
+    max-width: 400px; 
+    text-align: left; 
+  }
+
+  .close { 
+    color: #aaa; 
+    float: right; 
+    font-size: 28px; 
+    font-weight: bold; 
+    cursor: pointer; 
+  }
+
+  .close:hover { 
+    color: black; 
+  }
+</style>
+</head>
+<body>
+
+<header>Choose Ur Partner</header>
+
+<div class="options">
+  <button onclick="showProfiles('male')">Male</button>
+  <button onclick="showProfiles('female')">Female</button>
+  <button onclick="showRubd()">RUBD</button>
+</div>
+
+<div class="profiles" id="profiles"></div>
+
+<div class="apply-form">
+  <h3>Apply Now</h3>
+  <input type="text" id="name" placeholder="Your Name">
+  <input type="text" id="username" placeholder="Instagram Username">
+  <input type="text" id="gender" placeholder="Your Gender (Male/Female)">
+  <input type="text" id="age" placeholder="Age">
+  <input type="text" id="address" placeholder="Address">
+  <input type="text" id="religion" placeholder="Religion">
+  <textarea id="details" placeholder="Your Details"></textarea>
+  <textarea id="additional" placeholder="Additional Information"></textarea>
+  <button onclick="submitApplication()">Submit</button>
+</div>
+
+<!-- Profile Modal -->
+<div id="profileModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('profileModal')">&times;</span>
+    <h3 id="modalName"></h3>
+    <p id="modalGender"></p>
+    <p id="modalUsername"></p>
+    <p id="modalAge"></p>
+    <p id="modalAddress"></p>
+    <p id="modalReligion"></p>
+    <p id="modalDetails"></p>
+    <p id="modalAdditional"></p>
+  </div>
+</div>
+
+<!-- Rubd Modal -->
+<div id="rubdModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('rubdModal')">&times;</span>
+    <h3>Founder: Rudra Chowdhury</h3>
+    <p>Company: RUBD Technologies</p>
+    <p>Location: Bangladesh</p>
+    <p>Services: Website & App Development, Digital Solutions</p>
+    <p>Contact: Rudramodak06@gmail.com</p>
+  </div>
+</div>
+
+<script>
+  const profilesData = [
+    { 
+      name: "Mark Rudra", 
+      gender: "male", 
+      username: "@mr.developer7", 
+      age: "19", 
+      address: "Bangladesh", 
+      religion: "Islam", 
+      details: "Loves coding and tech", 
+      additional: "Looking for a serious relationship" 
+    },
+    { 
+      name: "Rishu", 
+      gender: "male", 
+      username: "@R.", 
+      age: "15", 
+      address: "Nepal", 
+      religion: "Hindu", 
+      details: "Enjoys football and reading", 
+      additional: "Friendly and caring" 
+    },
+    { 
+      name: "Puja", 
+      gender: "female", 
+      username: "@puja_love", 
+      age: "18", 
+      address: "India", 
+      religion: "Hindu", 
+      details: "Loves music and painting", 
+      additional: "Fun-loving and cheerful" 
+    },
+    { 
+      name: "Riya", 
+      gender: "female", 
+      username: "@riya_travel", 
+      age: "20", 
+      address: "Bangladesh", 
+      religion: "Hindu", 
+      details: "Traveler and foodie", 
+      additional: "Looking for companionship" 
+    },
+    { 
+      name: "Ankita", 
+      gender: "female", 
+      username: "@anitaX", 
+      age: "18", 
+      address: "Up", 
+      religion: "Hindu", 
+      details: "Food lover", 
+      additional: "Fun-loving and caring" 
+    },
+    { 
+      name: "Utkarsh", 
+      gender: "male", 
+      username: "@Utkarsh_Bhardwaj52", 
+      age: "22", 
+      address: "Bangalore", 
+      religion: "Hindu", 
+      details: "Lawyer", 
+      additional: "Looking for companionship" 
+    }
+  ];
+
+  function showProfiles(gender) {
+    const container = document.getElementById('profiles');
+    container.innerHTML = '';
+    const filtered = profilesData.filter(p => p.gender === gender);
+    filtered.forEach((p, index) => {
+      const card = document.createElement('div');
+      card.className = 'profile-card';
+      card.innerHTML = `<h3 onclick="viewProfile(${index})">${p.name}</h3>
+                        <p>${p.details}</p>`;
+      container.appendChild(card);
+    });
+  }
+
+  function viewProfile(index) {
+    const p = profilesData[index];
+    document.getElementById('modalName').innerText = p.name;
+    document.getElementById('modalGender').innerText = "Gender: " + p.gender;
+    document.getElementById('modalUsername').innerText = "Instagram: " + p.username;
+    document.getElementById('modalAge').innerText = "Age: " + p.age;
+    document.getElementById('modalAddress').innerText = "Address: " + p.address;
+    document.getElementById('modalReligion').innerText = "Religion: " + p.religion;
+    document.getElementById('modalDetails').innerText = "Details: " + p.details;
+    document.getElementById('modalAdditional').innerText = "Additional: " + p.additional;
+    document.getElementById('profileModal').style.display = 'block';
+  }
+
+  function submitApplication() {
+    const name = document.getElementById('name').value;
+    const username = document.getElementById('username').value;
+    const gender = document.getElementById('gender').value.toLowerCase();
+    const age = document.getElementById('age').value;
+    const address = document.getElementById('address').value;
+    const religion = document.getElementById('religion').value;
+    const details = document.getElementById('details').value;
+    const additional = document.getElementById('additional').value;
+
+    if(name && username && gender && age && address && religion && details){
+      profilesData.push({ name, username, gender, age, address, religion, details, additional });
+      alert("Application submitted successfully!");
+      document.getElementById('name').value = '';
+      document.getElementById('username').value = '';
+      document.getElementById('gender').value = '';
+      document.getElementById('age').value = '';
+      document.getElementById('address').value = '';
+      document.getElementById('religion').value = '';
+      document.getElementById('details').value = '';
+      document.getElementById('additional').value = '';
+    } else {
+      alert("Please fill all the fields!");
+    }
+  }
+
+  function showRubd() {
+    document.getElementById('rubdModal').style.display = 'block';
+  }
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    if(event.target.classList.contains('modal')) {
+      event.target.style.display = "none";
+    }
+  }
+</script>
+
+</body>
+</html>
